@@ -33,7 +33,8 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
     super.dispose();
   }
 
-  void _onAdd() {
+  // 다음 숫자로 이동
+  void _slideToNextNumber() {
     if (_groupCount < _maxCount) {
       _pageController.animateToPage(
         _groupCount + 1,
@@ -43,7 +44,8 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
     }
   }
 
-  void _onRemove() {
+  // 이전 숫자로 이동
+  void _slideToPrevNumber() {
     if (_groupCount > _minCount) {
       _pageController.animateToPage(
         _groupCount - 1,
@@ -61,11 +63,17 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 왼쪽 버튼
-          IconButton(icon: Icon(Icons.remove, size: 80), onPressed: _onRemove),
+          IconButton(
+            icon: Icon(Icons.remove, size: 80),
+            onPressed: _slideToPrevNumber,
+          ),
           _buildGroupSelector(),
 
           // 오른쪽 버튼
-          IconButton(icon: Icon(Icons.add, size: 80), onPressed: _onAdd),
+          IconButton(
+            icon: Icon(Icons.add, size: 80),
+            onPressed: _slideToNextNumber,
+          ),
         ],
       ),
     );
