@@ -20,15 +20,20 @@ class RegistrationStepGroup extends StatefulWidget {
 
 class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
   late final PageController _pageController;
-  int _groupCount = 1;
+  late int _groupCount;
   final int _minCount = 1;
   final int _maxCount = 20;
 
   @override
   void initState() {
     super.initState();
+
+    // 이전에 선택한 값이 있으면 그 값으로, 없으면 기본 값 사용
+    _groupCount = widget.registrationInfo.groupSize ?? 1;
+
     _pageController = PageController(
-      initialPage: _groupCount,
+      // PageView는 0부터 시작, 인원수는 1부터 시작하므로 -1
+      initialPage: _groupCount - 1,
       viewportFraction: 0.3, // 양옆 숫자 보이게
     );
 

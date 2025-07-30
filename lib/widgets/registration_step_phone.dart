@@ -60,13 +60,6 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
     });
   }
 
-  // Next 버튼 핸들러 메서드
-  void _joinWaitingList() {
-    String rawNumber = _phoneNumber.replaceAll('-', '');
-    String formattedNumber = '09$rawNumber';
-    // widget.onNext(formattedNumber);
-  }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
