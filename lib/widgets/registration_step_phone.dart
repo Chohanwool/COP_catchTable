@@ -1,10 +1,20 @@
+import 'package:catch_table/models/registration.dart';
 import 'package:catch_table/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 
-class RegistrationStepPhone extends StatefulWidget {
-  const RegistrationStepPhone({super.key, required this.onNext});
+const kPhonePrefixPh = '09';
 
-  final Function(String value) onNext;
+class RegistrationStepPhone extends StatefulWidget {
+  const RegistrationStepPhone({
+    super.key,
+    required this.registrationInfo,
+    required this.onNext,
+    required this.onNavigateToWaitingList,
+  });
+
+  final Registration registrationInfo;
+  final ValueChanged<Registration> onNext;
+  final VoidCallback onNavigateToWaitingList;
 
   @override
   State<RegistrationStepPhone> createState() => _RegistrationPhoneState();
@@ -54,7 +64,7 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
   void _joinWaitingList() {
     String rawNumber = _phoneNumber.replaceAll('-', '');
     String formattedNumber = '09$rawNumber';
-    widget.onNext(formattedNumber);
+    // widget.onNext(formattedNumber);
   }
 
   @override
@@ -94,7 +104,7 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '09 ',
+                kPhonePrefixPh,
                 style: TextStyle(fontSize: context.fsp(46)),
                 textAlign: TextAlign.end,
               ),
@@ -164,7 +174,7 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {},
+              onTap: widget.onNavigateToWaitingList,
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
@@ -189,7 +199,18 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: _joinWaitingList,
+                onTap: () {
+                  final rawPhoneNumber = (kPhonePrefixPh + _phoneNumber)
+                      .replaceAll('-', '');
+
+                  if (rawPhoneNumber.length < 11) return;
+
+                  widget.onNext(
+                    widget.registrationInfo.copyWith(
+                      phoneNumber: rawPhoneNumber,
+                    ),
+                  );
+                },
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(

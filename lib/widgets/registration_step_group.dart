@@ -1,8 +1,18 @@
+import 'package:catch_table/models/registration.dart';
 import 'package:catch_table/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationStepGroup extends StatefulWidget {
-  const RegistrationStepGroup({super.key});
+  const RegistrationStepGroup({
+    super.key,
+    required this.registrationInfo,
+    required this.onNext,
+    required this.onBack,
+  });
+
+  final Registration registrationInfo;
+  final ValueChanged<Registration> onNext;
+  final VoidCallback onBack;
 
   @override
   State<RegistrationStepGroup> createState() => _RegistrationStepGroupState();
@@ -181,11 +191,11 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {},
+              onTap: widget.onBack,
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  'View Waiting List',
+                  'Back',
                   style: TextStyle(
                     fontSize: context.fsp(28),
                     fontWeight: FontWeight.w700,
@@ -206,7 +216,15 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  final int groupSize = _groupCount + 1;
+
+                  if (groupSize <= 0) return;
+
+                  widget.onNext(
+                    widget.registrationInfo.copyWith(groupSize: groupSize),
+                  );
+                },
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(

@@ -1,8 +1,18 @@
+import 'package:catch_table/models/registration.dart';
 import 'package:catch_table/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationStepConfirm extends StatelessWidget {
-  const RegistrationStepConfirm({super.key});
+  const RegistrationStepConfirm({
+    super.key,
+    required this.registrationInfo,
+    required this.onConfirm,
+    required this.onBack,
+  });
+
+  final Registration registrationInfo;
+  final VoidCallback onConfirm;
+  final VoidCallback onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +208,7 @@ class RegistrationStepConfirm extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {},
+              onTap: onBack,
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
@@ -223,7 +233,7 @@ class RegistrationStepConfirm extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () {},
+                onTap: onConfirm,
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
