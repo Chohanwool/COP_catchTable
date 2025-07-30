@@ -1,3 +1,4 @@
+import 'package:catch_table/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationStepPhone extends StatefulWidget {
@@ -94,23 +95,26 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
             children: [
               Text(
                 '09 ',
-                style: TextStyle(fontSize: 46),
+                style: TextStyle(fontSize: context.fsp(46)),
                 textAlign: TextAlign.end,
               ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
                   _phoneNumber,
-                  style: const TextStyle(fontSize: 46, color: Colors.black),
+                  style: TextStyle(
+                    fontSize: context.fsp(46),
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: context.hsp(24)),
         Text(
           'Enter your phone number',
-          style: TextStyle(color: Colors.black54, fontSize: 24),
+          style: TextStyle(color: Colors.black54, fontSize: context.fsp(32)),
         ),
       ],
     );
@@ -165,7 +169,10 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
                 alignment: Alignment.center,
                 child: Text(
                   'View Waiting List',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: context.fsp(28),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),
@@ -187,7 +194,10 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
                   alignment: Alignment.center,
                   child: Text(
                     'Next',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                      fontSize: context.fsp(28),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
