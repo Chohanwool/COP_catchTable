@@ -46,9 +46,6 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
 
   // 이전 숫자로 이동
   void _slideToPrevNumber() {
-    print(_groupCount);
-    print(_minCount);
-
     if (_groupCount >= _minCount) {
       _pageController.animateToPage(
         _groupCount - 1,
