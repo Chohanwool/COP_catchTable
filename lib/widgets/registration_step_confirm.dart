@@ -173,7 +173,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'If you miss your confirmation. we\'ll try to reach you by phone.',
+                      'If you miss your confirmation.\nwe\'ll try to reach you by phone.',
                       style: TextStyle(
                         color: Color(0xFF459acc),
                         fontSize: context.fsp(25),
