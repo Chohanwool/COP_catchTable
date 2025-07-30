@@ -1,3 +1,4 @@
+import 'package:catch_table/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationStepGroup extends StatefulWidget {
@@ -55,6 +56,42 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final height = constraints.maxHeight;
+
+        // 비율 기반 높이 설정
+        final titleAreaRatio = 0.2;
+        final groupSelectAreaRatio = 0.65;
+        final buttonRatio = 0.15;
+
+        return Column(
+          children: [
+            SizedBox(
+              height: height * titleAreaRatio,
+              child: Center(
+                child: Text(
+                  'Number of Guests',
+                  style: TextStyle(
+                    fontSize: context.fsp(40),
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * groupSelectAreaRatio,
+              child: _buildGroupSelectorWithControls(),
+            ),
+            SizedBox(height: height * buttonRatio, child: _buildButtonArea()),
+          ],
+        );
+      },
+    );
+  }
+
   // 숫자 슬라이더 위젯 : +,- 추가 버전
   Widget _buildGroupSelectorWithControls() {
     return SizedBox(
@@ -64,14 +101,14 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
         children: [
           // 왼쪽 버튼
           IconButton(
-            icon: Icon(Icons.remove, size: 80),
+            icon: Icon(Icons.remove, size: context.hsp(80)),
             onPressed: _slideToPrevNumber,
           ),
           _buildGroupSelector(),
 
           // 오른쪽 버튼
           IconButton(
-            icon: Icon(Icons.add, size: 80),
+            icon: Icon(Icons.add, size: context.hsp(80)),
             onPressed: _slideToNextNumber,
           ),
         ],
@@ -82,7 +119,7 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
   // 숫자 슬라이더 위젯 : 기본
   Widget _buildGroupSelector() {
     return SizedBox(
-      height: 200,
+      height: context.hsp(400),
       child: PageView.builder(
         controller: _pageController,
         physics: const BouncingScrollPhysics(), // ← 더 자연스럽게 슬라이드
@@ -120,7 +157,7 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
                       child: Text(
                         '${_minCount + index}',
                         style: TextStyle(
-                          fontSize: 140,
+                          fontSize: context.fsp(140),
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -133,39 +170,6 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
           );
         },
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final height = constraints.maxHeight;
-
-        // 비율 기반 높이 설정
-        final titleAreaRatio = 0.2;
-        final groupSelectAreaRatio = 0.65;
-        final buttonRatio = 0.15;
-
-        return Column(
-          children: [
-            SizedBox(
-              height: height * titleAreaRatio,
-              child: Center(
-                child: Text(
-                  'Number of Guests',
-                  style: const TextStyle(fontSize: 40, color: Colors.black54),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * groupSelectAreaRatio,
-              child: _buildGroupSelectorWithControls(),
-            ),
-            SizedBox(height: height * buttonRatio, child: _buildButtonArea()),
-          ],
-        );
-      },
     );
   }
 
@@ -182,7 +186,10 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
                 alignment: Alignment.center,
                 child: Text(
                   'View Waiting List',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: context.fsp(28),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),
@@ -204,7 +211,10 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
                   alignment: Alignment.center,
                   child: Text(
                     'Next',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                      fontSize: context.fsp(28),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
