@@ -1,3 +1,4 @@
+import 'package:catch_table/widgets/registration_step_confirm.dart';
 import 'package:catch_table/widgets/registration_step_group.dart';
 import 'package:catch_table/widgets/registration_step_phone.dart';
 import 'package:catch_table/widgets/store_info.dart';
@@ -20,7 +21,8 @@ class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
           children: [
             StoreInfo(),
             // Expanded(child: RegistrationStepPhone(onNext: (value) {})),
-            Expanded(child: RegistrationStepGroup()),
+            // Expanded(child: RegistrationStepGroup()),
+            Expanded(child: RegistrationStepConfirm()),
           ],
         ),
       ),
