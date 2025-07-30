@@ -107,11 +107,11 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
             ],
           ),
         ),
+        const SizedBox(height: 24),
         Text(
           'Enter your phone number',
           style: TextStyle(color: Colors.black54, fontSize: 24),
         ),
-        const SizedBox(height: 24),
       ],
     );
   }

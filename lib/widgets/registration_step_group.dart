@@ -46,7 +46,10 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
 
   // 이전 숫자로 이동
   void _slideToPrevNumber() {
-    if (_groupCount > _minCount) {
+    print(_groupCount);
+    print(_minCount);
+
+    if (_groupCount >= _minCount) {
       _pageController.animateToPage(
         _groupCount - 1,
         duration: const Duration(milliseconds: 300),
@@ -60,7 +63,7 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
     return SizedBox(
       height: 200,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           // 왼쪽 버튼
           IconButton(
@@ -120,7 +123,7 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
                       child: Text(
                         '${_minCount + index}',
                         style: TextStyle(
-                          fontSize: 100,
+                          fontSize: 140,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -154,7 +157,7 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
               child: Center(
                 child: Text(
                   'Number of Guests',
-                  style: const TextStyle(fontSize: 40),
+                  style: const TextStyle(fontSize: 40, color: Colors.black54),
                 ),
               ),
             ),
