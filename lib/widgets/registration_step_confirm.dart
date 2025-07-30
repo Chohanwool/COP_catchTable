@@ -20,11 +20,11 @@ class RegistrationStepConfirm extends StatelessWidget {
           children: [
             SizedBox(
               height: infoAreaRatio * height,
-              child: _buildConfrimArea(screenHeight, screenWidth),
+              child: _buildConfrimArea(context, screenHeight, screenWidth),
             ),
             SizedBox(
               height: buttonAreaRatio * height,
-              child: _buildButtonArea(),
+              child: _buildButtonArea(context),
             ),
           ],
         );
@@ -32,30 +32,65 @@ class RegistrationStepConfirm extends StatelessWidget {
     );
   }
 
-  Widget _buildConfrimArea(double screenHeight, double screenWidth) {
+  Widget _buildConfrimArea(
+    BuildContext context,
+    double screenHeight,
+    double screenWidth,
+  ) {
+    // 기준이 되는 화면 높이 (예: iPad Pro 12.9인치)
+    const double baseScreenHeight = 1366;
+    final double scaleFactor = screenHeight / baseScreenHeight;
+
+    // 반응형 폰트 크기
+    final double titleFontSize = 40 * scaleFactor;
+    final double subtitleFontSize = 28 * scaleFactor;
+    final double bodyFontSize = 34 * scaleFactor;
+    final double smallBodyFontSize = 30 * scaleFactor;
+    final double captionFontSize = 25 * scaleFactor;
+
+    // 반응형 여백
+    final double verticalPadding = 50 * scaleFactor;
+    final double horizontalPadding = 32;
+    final double spacing1 = 12 * scaleFactor;
+    final double spacing2 = 4 * scaleFactor;
+    final double spacing3 = 60 * scaleFactor;
+    final double spacing4 = 20 * scaleFactor;
+    final double spacing5 = 80 * scaleFactor;
+
+    // 반응형 컨테이너 및 아이콘 크기
+    final double containerSize = 150 * scaleFactor;
+    final double iconSize = 80 * scaleFactor;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 32),
+      padding: EdgeInsets.symmetric(
+        vertical: verticalPadding,
+        horizontal: horizontalPadding,
+      ),
       child: Column(
         children: [
-          Text(
-            'Check You\'re Registration',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              'Check You\'re Registration',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: titleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: spacing1),
           Text(
             'You\'re currently number 3 in line.',
-            style: TextStyle(color: Colors.black, fontSize: 28),
+            style: TextStyle(color: Colors.black, fontSize: subtitleFontSize),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: spacing2),
           Text(
             'We\'ll text you when your table is ready',
-            style: TextStyle(color: Colors.black, fontSize: 28),
+            style: TextStyle(color: Colors.black, fontSize: subtitleFontSize),
           ),
-          const SizedBox(height: 60),
+          SizedBox(height: spacing3),
           // 연락처 정보
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +99,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                 'Phone',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 34,
+                  fontSize: bodyFontSize,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -72,13 +107,13 @@ class RegistrationStepConfirm extends StatelessWidget {
                 '0909-123-4567',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 34,
+                  fontSize: bodyFontSize,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: spacing4),
           // 인원 수 정보
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +122,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                 'Group',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 34,
+                  fontSize: bodyFontSize,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -95,13 +130,13 @@ class RegistrationStepConfirm extends StatelessWidget {
                 '2',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 34,
+                  fontSize: bodyFontSize,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 80),
+          SizedBox(height: spacing5),
           Row(
             children: [
               Container(
@@ -109,44 +144,36 @@ class RegistrationStepConfirm extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   color: const Color.fromARGB(255, 254, 181, 71),
                 ),
-                width: 150,
-                height: 150,
-                child: const Icon(Icons.message_rounded, size: 80),
+                width: containerSize,
+                height: containerSize,
+                child: Icon(Icons.message_rounded, size: iconSize),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'SMS notification',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Text(
+                      'SMS notification',
+                      style: TextStyle(
+                        fontSize: smallBodyFontSize,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'We\'ll send you a text message\nwhen your table is ready.',
-                        style: TextStyle(
-                          color: Color(0xFF459acc),
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    Text(
+                      'We\'ll send you a text message\nwhen your table is ready.',
+                      style: TextStyle(
+                        color: Color(0xFF459acc),
+                        fontSize: captionFontSize,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Please respond within 5 minute',
-                        style: TextStyle(
-                          color: Color(0xFF459acc),
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    Text(
+                      'Please respond within 5 minute',
+                      style: TextStyle(
+                        color: Color(0xFF459acc),
+                        fontSize: captionFontSize,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -154,7 +181,7 @@ class RegistrationStepConfirm extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: spacing1),
           Row(
             children: [
               Container(
@@ -162,33 +189,28 @@ class RegistrationStepConfirm extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   color: const Color.fromARGB(255, 254, 181, 71),
                 ),
-                width: 150,
-                height: 150,
-                child: const Icon(Icons.phone, size: 80),
+                width: containerSize,
+                height: containerSize,
+                child: Icon(Icons.phone, size: iconSize),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Phone call',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Text(
+                      'Phone call',
+                      style: TextStyle(
+                        fontSize: smallBodyFontSize,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'If you miss your confirmation. we\'ll try to reach you by phone.',
-                        style: TextStyle(
-                          color: Color(0xFF459acc),
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    Text(
+                      'If you miss your confirmation. we\'ll try to reach you by phone.',
+                      style: TextStyle(
+                        color: Color(0xFF459acc),
+                        fontSize: captionFontSize,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -201,7 +223,12 @@ class RegistrationStepConfirm extends StatelessWidget {
     );
   }
 
-  Widget _buildButtonArea() {
+  Widget _buildButtonArea(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    const double baseScreenHeight = 1366;
+    final double scaleFactor = screenHeight / baseScreenHeight;
+    final double buttonFontSize = 28 * scaleFactor;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -214,7 +241,10 @@ class RegistrationStepConfirm extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   'Back',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: buttonFontSize,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),
@@ -236,7 +266,10 @@ class RegistrationStepConfirm extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     'Confirm',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                      fontSize: buttonFontSize,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
