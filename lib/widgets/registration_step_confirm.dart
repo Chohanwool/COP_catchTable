@@ -1,3 +1,4 @@
+import 'package:catch_table/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationStepConfirm extends StatelessWidget {
@@ -5,9 +6,6 @@ class RegistrationStepConfirm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
@@ -20,7 +18,7 @@ class RegistrationStepConfirm extends StatelessWidget {
           children: [
             SizedBox(
               height: infoAreaRatio * height,
-              child: _buildConfrimArea(context, screenHeight, screenWidth),
+              child: _buildConfrimArea(context),
             ),
             SizedBox(
               height: buttonAreaRatio * height,
@@ -32,40 +30,9 @@ class RegistrationStepConfirm extends StatelessWidget {
     );
   }
 
-  Widget _buildConfrimArea(
-    BuildContext context,
-    double screenHeight,
-    double screenWidth,
-  ) {
-    // 기준이 되는 화면 높이 (예: iPad Pro 12.9인치)
-    const double baseScreenHeight = 1366;
-    final double scaleFactor = screenHeight / baseScreenHeight;
-
-    // 반응형 폰트 크기
-    final double titleFontSize = 40 * scaleFactor;
-    final double subtitleFontSize = 28 * scaleFactor;
-    final double bodyFontSize = 34 * scaleFactor;
-    final double smallBodyFontSize = 30 * scaleFactor;
-    final double captionFontSize = 25 * scaleFactor;
-
-    // 반응형 여백
-    final double verticalPadding = 50 * scaleFactor;
-    final double horizontalPadding = 32;
-    final double spacing1 = 12 * scaleFactor;
-    final double spacing2 = 4 * scaleFactor;
-    final double spacing3 = 60 * scaleFactor;
-    final double spacing4 = 20 * scaleFactor;
-    final double spacing5 = 80 * scaleFactor;
-
-    // 반응형 컨테이너 및 아이콘 크기
-    final double containerSize = 150 * scaleFactor;
-    final double iconSize = 80 * scaleFactor;
-
+  Widget _buildConfrimArea(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: verticalPadding,
-        horizontal: horizontalPadding,
-      ),
+      padding: EdgeInsets.symmetric(vertical: context.hsp(50), horizontal: 32),
       child: Column(
         children: [
           FittedBox(
@@ -75,22 +42,22 @@ class RegistrationStepConfirm extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: titleFontSize,
+                fontSize: context.fsp(40),
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          SizedBox(height: spacing1),
+          SizedBox(height: context.hsp(12)),
           Text(
             'You\'re currently number 3 in line.',
-            style: TextStyle(color: Colors.black, fontSize: subtitleFontSize),
+            style: TextStyle(color: Colors.black, fontSize: context.fsp(28)),
           ),
-          SizedBox(height: spacing2),
+          SizedBox(height: context.hsp(4)),
           Text(
             'We\'ll text you when your table is ready',
-            style: TextStyle(color: Colors.black, fontSize: subtitleFontSize),
+            style: TextStyle(color: Colors.black, fontSize: context.fsp(28)),
           ),
-          SizedBox(height: spacing3),
+          SizedBox(height: context.hsp(60)),
           // 연락처 정보
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,7 +66,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                 'Phone',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: bodyFontSize,
+                  fontSize: context.fsp(34),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -107,13 +74,13 @@ class RegistrationStepConfirm extends StatelessWidget {
                 '0909-123-4567',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: bodyFontSize,
+                  fontSize: context.fsp(34),
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          SizedBox(height: spacing4),
+          SizedBox(height: context.hsp(20)),
           // 인원 수 정보
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,7 +89,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                 'Group',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: bodyFontSize,
+                  fontSize: context.fsp(34),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -130,13 +97,13 @@ class RegistrationStepConfirm extends StatelessWidget {
                 '2',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: bodyFontSize,
+                  fontSize: context.fsp(34),
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          SizedBox(height: spacing5),
+          SizedBox(height: context.hsp(80)),
           Row(
             children: [
               Container(
@@ -144,9 +111,9 @@ class RegistrationStepConfirm extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   color: const Color.fromARGB(255, 254, 181, 71),
                 ),
-                width: containerSize,
-                height: containerSize,
-                child: Icon(Icons.message_rounded, size: iconSize),
+                width: context.hsp(150),
+                height: context.hsp(150),
+                child: Icon(Icons.message_rounded, size: context.hsp(80)),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -156,7 +123,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                     Text(
                       'SMS notification',
                       style: TextStyle(
-                        fontSize: smallBodyFontSize,
+                        fontSize: context.fsp(30),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -164,7 +131,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                       'We\'ll send you a text message\nwhen your table is ready.',
                       style: TextStyle(
                         color: Color(0xFF459acc),
-                        fontSize: captionFontSize,
+                        fontSize: context.fsp(25),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -172,7 +139,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                       'Please respond within 5 minute',
                       style: TextStyle(
                         color: Color(0xFF459acc),
-                        fontSize: captionFontSize,
+                        fontSize: context.fsp(25),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -181,7 +148,7 @@ class RegistrationStepConfirm extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: spacing1),
+          SizedBox(height: context.hsp(12)),
           Row(
             children: [
               Container(
@@ -189,9 +156,9 @@ class RegistrationStepConfirm extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   color: const Color.fromARGB(255, 254, 181, 71),
                 ),
-                width: containerSize,
-                height: containerSize,
-                child: Icon(Icons.phone, size: iconSize),
+                width: context.hsp(150),
+                height: context.hsp(150),
+                child: Icon(Icons.phone, size: context.hsp(80)),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -201,7 +168,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                     Text(
                       'Phone call',
                       style: TextStyle(
-                        fontSize: smallBodyFontSize,
+                        fontSize: context.fsp(30),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -209,7 +176,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                       'If you miss your confirmation. we\'ll try to reach you by phone.',
                       style: TextStyle(
                         color: Color(0xFF459acc),
-                        fontSize: captionFontSize,
+                        fontSize: context.fsp(25),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -224,11 +191,6 @@ class RegistrationStepConfirm extends StatelessWidget {
   }
 
   Widget _buildButtonArea(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    const double baseScreenHeight = 1366;
-    final double scaleFactor = screenHeight / baseScreenHeight;
-    final double buttonFontSize = 28 * scaleFactor;
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -242,7 +204,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                 child: Text(
                   'Back',
                   style: TextStyle(
-                    fontSize: buttonFontSize,
+                    fontSize: context.fsp(28),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -267,7 +229,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                   child: Text(
                     'Confirm',
                     style: TextStyle(
-                      fontSize: buttonFontSize,
+                      fontSize: context.fsp(28),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
