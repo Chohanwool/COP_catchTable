@@ -15,6 +15,8 @@ class Registration {
     );
   }
 
+  // raw 번호를 포맷된 형식으로 반환
+  // 예) 09171234567 -> 0917-123-4567
   String get formattedPhoneNumber {
     if (phoneNumber == null) return '';
     return phoneNumber!.formatPhilippinePhoneNumber();
