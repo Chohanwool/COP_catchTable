@@ -24,6 +24,17 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
   // 상태 변수
   String _phoneNumber = '';
 
+  @override
+  void initState() {
+    super.initState();
+    // 위젯이 처음 생성될 때, 부모로부터 받은 전화번호 정보로 상태를 초기화합니다.
+    if (widget.registrationInfo.phoneNumber != null) {
+      // '09' 접두사를 제외하고, 포맷을 적용하여 화면에 표시합니다.
+      final initialNumber = widget.registrationInfo.phoneNumber!.substring(2);
+      _phoneNumber = _formatPhoneNumber(initialNumber);
+    }
+  }
+
   // 연락처 포맷터
   // 1,4 자리 후 '-' 추가
   String _formatPhoneNumber(String digits) {
