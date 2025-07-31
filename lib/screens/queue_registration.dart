@@ -65,6 +65,8 @@ class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
   void _onSubmitRegistration(Registration newRegistration) {
     setState(() {
       registrationList.add(newRegistration);
+      // 등록 완료 후, 상태를 초기화하고 첫 단계로 돌아갑니다.
+      _registration = const Registration();
       _currentStep = RegistrationStep.phone;
     });
   }
