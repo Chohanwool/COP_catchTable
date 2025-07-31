@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class StoreInfo extends StatefulWidget {
-  const StoreInfo({super.key});
+  const StoreInfo({super.key, required this.waitingNum});
+
+  final String waitingNum;
 
   @override
   State<StoreInfo> createState() => _StoreInfoState();
@@ -85,7 +87,7 @@ class _StoreInfoState extends State<StoreInfo> {
                     ),
                     const SizedBox(width: 42.0),
                     Text(
-                      '34',
+                      widget.waitingNum,
                       style: TextStyle(
                         fontSize: 120,
                         fontWeight: FontWeight.bold,

@@ -105,7 +105,7 @@ class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
       child: Scaffold(
         body: Row(
           children: [
-            StoreInfo(),
+            StoreInfo(waitingNum: registrationList.length.toString()),
             Expanded(child: _buildRightPanel()),
           ],
         ),
