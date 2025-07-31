@@ -1,3 +1,4 @@
+import 'package:catch_table/data/dummy_data.dart';
 import 'package:catch_table/models/registration.dart';
 import 'package:catch_table/widgets/registration_step_confirm.dart';
 import 'package:catch_table/widgets/registration_step_group.dart';
@@ -19,6 +20,8 @@ class QueueRegistrationScreen extends StatefulWidget {
 class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
   RegistrationStep _currentStep = RegistrationStep.phone;
   Registration _registration = const Registration();
+
+  final registrationList = dummyRegistrations;
 
   // 대기 현황 보기
   void _navigateToWaitingList() {
@@ -58,6 +61,14 @@ class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
     });
   }
 
+  // 대기열 등록
+  void _onSubmitRegistration(Registration newRegistration) {
+    setState(() {
+      registrationList.add(newRegistration);
+      _currentStep = RegistrationStep.phone;
+    });
+  }
+
   Widget _buildRightPanel() {
     switch (_currentStep) {
       case RegistrationStep.phone:
@@ -80,7 +91,8 @@ class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
         return RegistrationStepConfirm(
           registrationInfo: _registration,
           onConfirm: () {
-            debugPrint(_registration.toString());
+            // confirm 단계에서는 새롭게 추가되는 데이터가 없기 때문에 최상위의 상태인 _registration을 사용
+            _onSubmitRegistration(_registration);
           },
           onBack: _onBackStep,
         );
