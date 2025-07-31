@@ -1,27 +1,28 @@
+import 'package:catch_table/extensions/string_extensions.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
 class Registration {
-  const Registration({
-    this.phoneNumber,
-    this.groupSize,
-  });
+  const Registration({this.phoneNumber, this.groupSize});
 
   final String? phoneNumber;
   final int? groupSize;
 
-  Registration copyWith({
-    String? phoneNumber,
-    int? groupSize,
-  }) {
+  Registration copyWith({String? phoneNumber, int? groupSize}) {
     return Registration(
       phoneNumber: phoneNumber ?? this.phoneNumber,
       groupSize: groupSize ?? this.groupSize,
     );
   }
 
+  String get formattedPhoneNumber {
+    if (phoneNumber == null) return '';
+    return phoneNumber!.formatPhilippinePhoneNumber();
+  }
+
   @override
-  String toString() => 'Registration(phoneNumber: $phoneNumber, groupSize: $groupSize)';
+  String toString() =>
+      'Registration(phoneNumber: $phoneNumber, groupSize: $groupSize)';
 
   @override
   bool operator ==(Object other) {

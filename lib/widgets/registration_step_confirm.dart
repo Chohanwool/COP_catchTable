@@ -81,7 +81,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                 ),
               ),
               Text(
-                '0909-123-4567',
+                registrationInfo.formattedPhoneNumber,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: context.fsp(34),
@@ -104,7 +104,7 @@ class RegistrationStepConfirm extends StatelessWidget {
                 ),
               ),
               Text(
-                '2',
+                registrationInfo.groupSize.toString(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: context.fsp(34),
