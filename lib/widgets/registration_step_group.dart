@@ -20,7 +20,7 @@ class RegistrationStepGroup extends StatefulWidget {
 
 class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
   late final PageController _pageController;
-  late int _groupCount;
+  int _groupCount = 1; // 기본값 1로 시작
   final int _minCount = 1;
   final int _maxCount = 20;
 
@@ -28,19 +28,19 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
   void initState() {
     super.initState();
 
+    // 좌우 숫자 인식후 화면 빌드되도록
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+
     // 이전에 선택한 값이 있으면 그 값으로, 없으면 기본 값 사용
-    _groupCount = widget.registrationInfo.groupSize ?? 1;
+    _groupCount = widget.registrationInfo.groupSize ?? _minCount;
 
     _pageController = PageController(
       // PageView는 0부터 시작, 인원수는 1부터 시작하므로 -1
       initialPage: _groupCount - 1,
       viewportFraction: 0.3, // 양옆 숫자 보이게
     );
-
-    // 좌우 숫자 인식후 화면 빌드되도록
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
   }
 
   @override
@@ -141,7 +141,7 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
         itemCount: _maxCount,
         scrollDirection: Axis.horizontal,
         onPageChanged: (index) {
-          setState(() => _groupCount = index);
+          setState(() => _groupCount = index + 1);
         },
         itemBuilder: (context, index) {
           return AnimatedBuilder(
@@ -222,12 +222,8 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  final int groupSize = _groupCount + 1;
-
-                  if (groupSize <= 0) return;
-
                   widget.onNext(
-                    widget.registrationInfo.copyWith(groupSize: groupSize),
+                    widget.registrationInfo.copyWith(groupSize: _groupCount),
                   );
                 },
                 child: Container(
