@@ -1,5 +1,6 @@
 import 'package:catch_table/data/dummy_data.dart';
 import 'package:catch_table/models/registration.dart';
+import 'package:catch_table/screens/waiting_list.dart';
 import 'package:catch_table/widgets/registration_step_confirm.dart';
 import 'package:catch_table/widgets/registration_step_group.dart';
 import 'package:catch_table/widgets/registration_step_phone.dart';
@@ -25,7 +26,11 @@ class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
 
   // 대기 현황 보기
   void _navigateToWaitingList() {
-    debugPrint('_navigateToWaitingList..');
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => WaitingListScreen(registrationList: registrationList),
+      ),
+    );
   }
 
   // 다음 스텝으로 이동
