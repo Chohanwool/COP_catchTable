@@ -157,13 +157,13 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
         ),
         itemBuilder: (context, index) {
           if (index < 9) {
-            return _buildKey('${index + 1}');
+            return _buildKey('${index + 1}', context);
           } else if (index == 9) {
-            return _buildKey('RESET');
+            return _buildKey('RESET', context);
           } else if (index == 10) {
-            return _buildKey('0');
+            return _buildKey('0', context);
           } else {
-            return _buildKey('DEL');
+            return _buildKey('DEL', context);
           }
         },
       ),
@@ -234,13 +234,16 @@ class _RegistrationPhoneState extends State<RegistrationStepPhone> {
   }
 
   // 키패드 버튼 설정
-  Widget _buildKey(String label) {
+  Widget _buildKey(String label, BuildContext context) {
     return ElevatedButton(
       onPressed: () => _onKeyboardTap(label),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        textStyle: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+        textStyle: TextStyle(
+          fontSize: context.fsp(50),
+          fontWeight: FontWeight.bold,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0),
           side: BorderSide(

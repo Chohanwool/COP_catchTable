@@ -53,7 +53,7 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
   void _slideToNextNumber() {
     if (_groupCount < _maxCount) {
       _pageController.animateToPage(
-        _groupCount + 1,
+        _groupCount, // +1 제거
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
@@ -62,9 +62,10 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
 
   // 이전 숫자로 이동
   void _slideToPrevNumber() {
-    if (_groupCount >= _minCount) {
+    if (_groupCount > _minCount) {
+      // >= 대신 > 사용
       _pageController.animateToPage(
-        _groupCount - 1,
+        _groupCount - 2, // -1 대신 -2
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
@@ -148,19 +149,21 @@ class _RegistrationStepGroupState extends State<RegistrationStepGroup> {
             animation: _pageController,
             builder: (context, child) {
               double value = 0;
+              bool isInitialized = false;
+
               if (_pageController.hasClients &&
                   _pageController.position.haveDimensions) {
                 value =
                     ((_pageController.page ?? _groupCount.toDouble()) - index)
                         .toDouble();
                 value = value.clamp(-1, 1);
+                isInitialized = true;
               }
 
-              final scale = 1 - (value.abs() * 0.5); // 가까울수록 큼
-              final opacity = 1 - (value.abs() * 0.7); // 멀수록 흐림
-              // 아래 수치 조절하면 좌,우 숫자는 조금 아래로 떨어짐
-              // 예) value.abs() * 20;
-              final translateY = value.abs(); // 멀수록 위아래로 밀림
+              // 초기화되지 않은 경우 기본값 설정
+              final scale = isInitialized ? (1 - (value.abs() * 0.5)) : 0.5;
+              final opacity = isInitialized ? (1 - (value.abs() * 0.7)) : 0.3;
+              final translateY = isInitialized ? value.abs() : 0.5;
 
               return Center(
                 child: Opacity(
