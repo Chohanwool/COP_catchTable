@@ -18,11 +18,11 @@ RegistrationRepository registrationRepository(Ref ref) {
 /// GetRegistrations UseCase Provider
 @riverpod
 GetRegistrations getRegistrations(Ref ref) {
-  return GetRegistrations(ref.watch(registrationRepositoryProvider));
+  return GetRegistrations(ref.read(registrationRepositoryProvider));
 }
 
 /// AddRegistration UseCase Provider
 @riverpod
 AddRegistration addRegistration(Ref ref) {
-  return AddRegistration(ref.watch(registrationRepositoryProvider));
+  return AddRegistration(ref.read(registrationRepositoryProvider));
 }
