@@ -1,4 +1,4 @@
-import 'package:catch_table/extensions/string_extensions.dart';
+import 'package:catch_table/core/extensions/string_extensions.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable

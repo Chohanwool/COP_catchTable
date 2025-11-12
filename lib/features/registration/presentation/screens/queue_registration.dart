@@ -1,10 +1,10 @@
 import 'package:catch_table/data/dummy_data.dart';
-import 'package:catch_table/models/registration.dart';
-import 'package:catch_table/screens/waiting_list.dart';
-import 'package:catch_table/widgets/registration_step_confirm.dart';
-import 'package:catch_table/widgets/registration_step_group.dart';
-import 'package:catch_table/widgets/registration_step_phone.dart';
-import 'package:catch_table/widgets/store_info.dart';
+import 'package:catch_table/features/registration/domain/entities/registration.dart';
+import 'package:catch_table/features/registration/presentation/screens/waiting_list.dart';
+import 'package:catch_table/features/registration/presentation/widgets/registration_step_confirm.dart';
+import 'package:catch_table/features/registration/presentation/widgets/registration_step_group.dart';
+import 'package:catch_table/features/registration/presentation/widgets/registration_step_phone.dart';
+import 'package:catch_table/features/registration/presentation/widgets/store_info.dart';
 import 'package:flutter/material.dart';
 
 // 단계별 스텝을 확인하기 위한 ENUM

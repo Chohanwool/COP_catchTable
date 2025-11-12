@@ -1,5 +1,5 @@
 
-import 'package:catch_table/models/registration.dart';
+import 'package:catch_table/features/registration/domain/entities/registration.dart';
 import 'package:flutter/material.dart';
 
 class WaitingListScreen extends StatelessWidget {

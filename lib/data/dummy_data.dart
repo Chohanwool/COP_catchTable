@@ -1,4 +1,4 @@
-import 'package:catch_table/models/registration.dart';
+import 'package:catch_table/features/registration/domain/entities/registration.dart';
 
 final List<Registration> dummyRegistrations = [
   Registration(phoneNumber: '09171234567', groupSize: 2),

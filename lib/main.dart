@@ -1,4 +1,4 @@
-import 'package:catch_table/screens/queue_registration.dart';
+import 'package:catch_table/features/registration/presentation/screens/queue_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
