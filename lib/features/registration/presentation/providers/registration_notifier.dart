@@ -12,13 +12,12 @@ part 'registration_notifier.g.dart';
 class RegistrationNotifier extends _$RegistrationNotifier {
   @override
   RegistrationState build() {
-    // 초기 상태 설정 및 등록 목록 로드
-    _loadRegistrations();
+    // 초기 상태를 반환하고, 데이터 로드는 외부에서 호출되도록 함
     return const RegistrationState();
   }
 
   /// 등록 목록을 로드합니다.
-  Future<void> _loadRegistrations() async {
+  Future<void> loadRegistrations() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
@@ -84,7 +83,7 @@ class RegistrationNotifier extends _$RegistrationNotifier {
       await addRegistration(state.currentRegistration);
 
       // 등록 목록을 다시 로드
-      await _loadRegistrations();
+      await loadRegistrations();
 
       // 상태를 초기화하고 첫 단계로 돌아감
       state = state.copyWith(

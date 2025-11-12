@@ -12,11 +12,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Queue Registration Screen (Presentation Layer)
 ///
 /// Clean Architecture + Riverpod를 사용한 대기 등록 화면
-/// - ConsumerWidget으로 Riverpod Provider 연동
+/// - ConsumerStatefulWidget으로 Riverpod Provider 연동
 /// - UseCase를 통한 비즈니스 로직 처리
 /// - 상태 관리는 RegistrationNotifier가 담당
-class QueueRegistrationScreen extends ConsumerWidget {
+class QueueRegistrationScreen extends ConsumerStatefulWidget {
   const QueueRegistrationScreen({super.key});
+
+  @override
+  ConsumerState<QueueRegistrationScreen> createState() =>
+      _QueueRegistrationScreenState();
+}
+
+class _QueueRegistrationScreenState
+    extends ConsumerState<QueueRegistrationScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // 첫 프레임 이후에 데이터 로드
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(registrationProvider.notifier).loadRegistrations();
+    });
+  }
 
   // 대기 현황 보기
   void _navigateToWaitingList(
@@ -31,7 +47,7 @@ class QueueRegistrationScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final state = ref.watch(registrationProvider);
 
     return SafeArea(
@@ -39,7 +55,7 @@ class QueueRegistrationScreen extends ConsumerWidget {
         body: Row(
           children: [
             StoreInfo(waitingNum: state.registrations.length.toString()),
-            Expanded(child: _buildRightPanel(context, ref, state)),
+            Expanded(child: _buildRightPanel(context, state)),
           ],
         ),
       ),
@@ -50,7 +66,6 @@ class QueueRegistrationScreen extends ConsumerWidget {
   /// - 스텝에 맞는 위젯을 빌드하여 반환
   Widget _buildRightPanel(
     BuildContext context,
-    WidgetRef ref,
     RegistrationState state,
   ) {
     final notifier = ref.read(registrationProvider.notifier);
