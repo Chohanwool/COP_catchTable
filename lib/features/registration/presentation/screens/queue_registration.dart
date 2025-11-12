@@ -1,4 +1,4 @@
-import 'package:catch_table/data/dummy_data.dart';
+import 'package:catch_table/features/registration/data/datasources/dummy_data.dart';
 import 'package:catch_table/features/registration/domain/entities/registration.dart';
 import 'package:catch_table/features/registration/presentation/screens/waiting_list.dart';
 import 'package:catch_table/features/registration/presentation/widgets/registration_step_confirm.dart';
