@@ -1,122 +1,90 @@
-import 'package:catch_table/features/registration/data/datasources/dummy_data.dart';
 import 'package:catch_table/features/registration/domain/entities/registration.dart';
+import 'package:catch_table/features/registration/presentation/providers/registration_notifier.dart';
+import 'package:catch_table/features/registration/presentation/providers/registration_state.dart';
 import 'package:catch_table/features/registration/presentation/screens/waiting_list.dart';
 import 'package:catch_table/features/registration/presentation/widgets/registration_step_confirm.dart';
 import 'package:catch_table/features/registration/presentation/widgets/registration_step_group.dart';
 import 'package:catch_table/features/registration/presentation/widgets/registration_step_phone.dart';
 import 'package:catch_table/features/registration/presentation/widgets/store_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// 단계별 스텝을 확인하기 위한 ENUM
-enum RegistrationStep { phone, group, confirm }
-
-class QueueRegistrationScreen extends StatefulWidget {
+/// Queue Registration Screen (Presentation Layer)
+///
+/// Clean Architecture + Riverpod를 사용한 대기 등록 화면
+/// - ConsumerWidget으로 Riverpod Provider 연동
+/// - UseCase를 통한 비즈니스 로직 처리
+/// - 상태 관리는 RegistrationNotifier가 담당
+class QueueRegistrationScreen extends ConsumerWidget {
   const QueueRegistrationScreen({super.key});
 
-  @override
-  State<QueueRegistrationScreen> createState() =>
-      _QueueRegistrationScreenState();
-}
-
-class _QueueRegistrationScreenState extends State<QueueRegistrationScreen> {
-  RegistrationStep _currentStep = RegistrationStep.phone;
-  Registration _registration = const Registration();
-
-  final registrationList = dummyRegistrations;
-
   // 대기 현황 보기
-  void _navigateToWaitingList() {
+  void _navigateToWaitingList(
+    BuildContext context,
+    List<Registration> registrations,
+  ) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => WaitingListScreen(registrationList: registrationList),
+        builder: (ctx) => WaitingListScreen(registrationList: registrations),
       ),
     );
   }
 
-  // 다음 스텝으로 이동
-  void _onNextStep(Registration newRegistration) {
-    debugPrint(newRegistration.toString());
-
-    // copyWith를 사용해서 기존 상태에 새로운 데이터를 병합
-    final updateRegistration = _registration.copyWith(
-      phoneNumber: newRegistration.phoneNumber,
-      groupSize: newRegistration.groupSize,
-    );
-
-    setState(() {
-      _registration = updateRegistration;
-
-      // 현재 단계에 따라 다음 단계 결정
-      if (_currentStep == RegistrationStep.phone) {
-        _currentStep = RegistrationStep.group;
-      } else if (_currentStep == RegistrationStep.group) {
-        _currentStep = RegistrationStep.confirm;
-      }
-    });
-  }
-
-  // 이전 스텝으로 이동
-  void _onBackStep() {
-    setState(() {
-      if (_currentStep == RegistrationStep.confirm) {
-        _currentStep = RegistrationStep.group;
-      } else if (_currentStep == RegistrationStep.group) {
-        _currentStep = RegistrationStep.phone;
-      }
-    });
-  }
-
-  // 대기열 등록
-  void _onSubmitRegistration(Registration newRegistration) {
-    setState(() {
-      registrationList.add(newRegistration);
-      // 등록 완료 후, 상태를 초기화하고 첫 단계로 돌아갑니다.
-      _registration = const Registration();
-      _currentStep = RegistrationStep.phone;
-    });
-  }
-
-  Widget _buildRightPanel() {
-    switch (_currentStep) {
-      case RegistrationStep.phone:
-        return RegistrationStepPhone(
-          registrationInfo: _registration,
-          onNext: (newRegistration) {
-            _onNextStep(newRegistration);
-          },
-          onNavigateToWaitingList: _navigateToWaitingList,
-        );
-      case RegistrationStep.group:
-        return RegistrationStepGroup(
-          registrationInfo: _registration,
-          onNext: (newRegistration) {
-            _onNextStep(newRegistration);
-          },
-          onBack: _onBackStep,
-        );
-      case RegistrationStep.confirm:
-        return RegistrationStepConfirm(
-          registrationInfo: _registration,
-          onConfirm: () {
-            // confirm 단계에서는 새롭게 추가되는 데이터가 없기 때문에 최상위의 상태인 _registration을 사용
-            _onSubmitRegistration(_registration);
-          },
-          onBack: _onBackStep,
-        );
-    }
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(registrationProvider);
+
     return SafeArea(
       child: Scaffold(
         body: Row(
           children: [
-            StoreInfo(waitingNum: registrationList.length.toString()),
-            Expanded(child: _buildRightPanel()),
+            StoreInfo(waitingNum: state.registrations.length.toString()),
+            Expanded(child: _buildRightPanel(context, ref, state)),
           ],
         ),
       ),
     );
+  }
+
+  /// 대기화면(우측) 빌드
+  /// - 스텝에 맞는 위젯을 빌드하여 반환
+  Widget _buildRightPanel(
+    BuildContext context,
+    WidgetRef ref,
+    RegistrationState state,
+  ) {
+    final notifier = ref.read(registrationProvider.notifier);
+
+    switch (state.currentStep) {
+      case RegistrationStep.phone:
+        return RegistrationStepPhone(
+          registrationInfo: state.currentRegistration,
+          onNext: (newRegistration) {
+            notifier.nextStep(newRegistration);
+          },
+          onNavigateToWaitingList: () =>
+              _navigateToWaitingList(context, state.registrations),
+        );
+      case RegistrationStep.group:
+        return RegistrationStepGroup(
+          registrationInfo: state.currentRegistration,
+          onNext: (newRegistration) {
+            notifier.nextStep(newRegistration);
+          },
+          onBack: () {
+            notifier.previousStep();
+          },
+        );
+      case RegistrationStep.confirm:
+        return RegistrationStepConfirm(
+          registrationInfo: state.currentRegistration,
+          onConfirm: () {
+            notifier.submitRegistration();
+          },
+          onBack: () {
+            notifier.previousStep();
+          },
+        );
+    }
   }
 }
