@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 
 import 'package:catch_table/features/registration/domain/entities/registration.dart';
-import 'package:flutter/material.dart';
 
 class WaitingListScreen extends StatelessWidget {
   const WaitingListScreen({super.key, required this.registrationList});

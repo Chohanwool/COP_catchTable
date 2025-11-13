@@ -1,5 +1,6 @@
-import 'package:catch_table/features/registration/domain/entities/registration.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:catch_table/features/registration/domain/entities/registration.dart';
 
 /// 등록 단계
 enum RegistrationStep { phone, group, confirm }

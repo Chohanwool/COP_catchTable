@@ -1,4 +1,9 @@
+import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:catch_table/features/registration/domain/entities/registration.dart';
+
 import 'package:catch_table/features/registration/presentation/providers/registration_providers.dart';
 import 'package:catch_table/features/registration/presentation/providers/registration_state.dart';
 import 'package:catch_table/features/registration/presentation/screens/waiting_list.dart';
@@ -6,8 +11,6 @@ import 'package:catch_table/features/registration/presentation/widgets/registrat
 import 'package:catch_table/features/registration/presentation/widgets/registration_step_group.dart';
 import 'package:catch_table/features/registration/presentation/widgets/registration_step_phone.dart';
 import 'package:catch_table/features/registration/presentation/widgets/store_info.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Queue Registration Screen (Presentation Layer)
 ///
@@ -65,10 +68,7 @@ class _QueueRegistrationScreenState
 
   /// 대기화면(우측) 빌드
   /// - 스텝에 맞는 위젯을 빌드하여 반환
-  Widget _buildRightPanel(
-    BuildContext context,
-    RegistrationState state,
-  ) {
+  Widget _buildRightPanel(BuildContext context, RegistrationState state) {
     final notifier = ref.read(registrationNotifierProvider);
 
     switch (state.currentStep) {

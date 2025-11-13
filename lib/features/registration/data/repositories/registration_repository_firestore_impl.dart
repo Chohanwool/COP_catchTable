@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:catch_table/core/errors/failures.dart';
 import 'package:catch_table/core/utils/result.dart';
-import 'package:catch_table/features/registration/data/datasources/registration_remote_datasource.dart';
+
 import 'package:catch_table/features/registration/data/models/registration_model.dart';
+
+import 'package:catch_table/features/registration/data/datasources/registration_remote_datasource.dart';
+
 import 'package:catch_table/features/registration/domain/entities/registration.dart';
 import 'package:catch_table/features/registration/domain/repositories/registration_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Registration Repository Firestore 구현체
 class RegistrationRepositoryFirestoreImpl implements RegistrationRepository {
@@ -21,20 +25,19 @@ class RegistrationRepositoryFirestoreImpl implements RegistrationRepository {
       return remoteDataSource
           .watchRegistrations(storeId: storeId, date: date)
           .map((models) {
-        final entities = models.map((model) => model.toEntity()).toList();
-        return Success(entities);
-      }).handleError((error) {
-        if (error is FirebaseException) {
-          return Error(
-            FirestoreFailure(error.message ?? 'Firestore 오류가 발생했습니다.'),
-          );
-        }
-        return Error(ServerFailure('서버 오류가 발생했습니다: $error'));
-      });
+            final entities = models.map((model) => model.toEntity()).toList();
+            return Success(entities);
+          })
+          .handleError((error) {
+            if (error is FirebaseException) {
+              return Error(
+                FirestoreFailure(error.message ?? 'Firestore 오류가 발생했습니다.'),
+              );
+            }
+            return Error(ServerFailure('서버 오류가 발생했습니다: $error'));
+          });
     } catch (e) {
-      return Stream.value(
-        Error(ServerFailure('스트림 생성 오류가 발생했습니다: $e')),
-      );
+      return Stream.value(Error(ServerFailure('스트림 생성 오류가 발생했습니다: $e')));
     }
   }
 
@@ -45,9 +48,7 @@ class RegistrationRepositoryFirestoreImpl implements RegistrationRepository {
   }) async {
     try {
       if (!registration.isValid) {
-        return const Error(
-          ValidationFailure('유효하지 않은 등록 정보입니다.'),
-        );
+        return const Error(ValidationFailure('유효하지 않은 등록 정보입니다.'));
       }
 
       final model = RegistrationModel.fromEntity(
@@ -78,9 +79,7 @@ class RegistrationRepositoryFirestoreImpl implements RegistrationRepository {
       );
       return const Success(null);
     } on FirebaseException catch (e) {
-      return Error(
-        FirestoreFailure(e.message ?? 'Firestore 삭제 오류가 발생했습니다.'),
-      );
+      return Error(FirestoreFailure(e.message ?? 'Firestore 삭제 오류가 발생했습니다.'));
     } catch (e) {
       return Error(ServerFailure('서버 오류가 발생했습니다: $e'));
     }
@@ -100,9 +99,7 @@ class RegistrationRepositoryFirestoreImpl implements RegistrationRepository {
       );
       return const Success(null);
     } on FirebaseException catch (e) {
-      return Error(
-        FirestoreFailure(e.message ?? 'Firestore 업데이트 오류가 발생했습니다.'),
-      );
+      return Error(FirestoreFailure(e.message ?? 'Firestore 업데이트 오류가 발생했습니다.'));
     } catch (e) {
       return Error(ServerFailure('서버 오류가 발생했습니다: $e'));
     }

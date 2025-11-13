@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:catch_table/core/consts/constants.dart';
+import 'package:catch_table/core/utils/responsive_helper.dart';
 
 import 'package:catch_table/features/registration/domain/entities/registration.dart';
-import 'package:catch_table/core/utils/responsive_helper.dart';
 
 class RegistrationStepPhone extends StatefulWidget {
   const RegistrationStepPhone({

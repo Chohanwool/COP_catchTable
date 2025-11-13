@@ -2,8 +2,8 @@ import 'package:catch_table/core/errors/failures.dart';
 
 /// Either 패턴을 구현한 Result 타입
 ///
-/// Repository에서 반환하는 값의 타입으로 사용됩니다.
-/// Success 또는 Failure를 담을 수 있습니다.
+/// Repository에서 반환하는 값의 타입으로 사용
+/// Success 또는 Failure를 담을 수 있음
 sealed class Result<T> {
   const Result();
 }

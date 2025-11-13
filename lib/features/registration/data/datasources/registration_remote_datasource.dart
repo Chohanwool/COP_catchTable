@@ -1,6 +1,8 @@
-import 'package:catch_table/core/constants/firebase_constants.dart';
-import 'package:catch_table/features/registration/data/models/registration_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:catch_table/core/constants/firebase_constants.dart';
+
+import 'package:catch_table/features/registration/data/models/registration_model.dart';
 
 /// Registration Remote DataSource 인터페이스
 abstract class RegistrationRemoteDataSource {
@@ -30,7 +32,7 @@ abstract class RegistrationRemoteDataSource {
 /// Registration Remote DataSource 구현체 (Firestore)
 class RegistrationRemoteDataSourceImpl implements RegistrationRemoteDataSource {
   RegistrationRemoteDataSourceImpl({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _firestore;
 
@@ -49,13 +51,13 @@ class RegistrationRemoteDataSourceImpl implements RegistrationRemoteDataSource {
         .orderBy(FirebaseFields.registeredAt, descending: false)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return RegistrationModel.fromFirestore(
-          doc.data() as Map<String, dynamic>,
-          doc.id,
-        );
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return RegistrationModel.fromFirestore(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            );
+          }).toList();
+        });
   }
 
   @override

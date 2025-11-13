@@ -1,10 +1,14 @@
-import 'package:catch_table/core/utils/result.dart';
-import 'package:catch_table/features/registration/domain/entities/registration.dart';
-import 'package:catch_table/features/registration/presentation/providers/registration_providers.dart';
-import 'package:catch_table/features/registration/presentation/providers/registration_state.dart';
-import 'package:catch_table/features/store/presentation/providers/store_providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:catch_table/core/utils/result.dart';
+
+import 'package:catch_table/features/store/presentation/providers/store_providers.dart';
+
+import 'package:catch_table/features/registration/domain/entities/registration.dart';
+
+import 'package:catch_table/features/registration/presentation/providers/registration_providers.dart';
+import 'package:catch_table/features/registration/presentation/providers/registration_state.dart';
 
 /// Registration Notifier (Presentation Layer)
 ///
@@ -26,10 +30,7 @@ class RegistrationNotifier extends ChangeNotifier {
   void watchRegistrations() {
     final store = _ref.read(selectedStoreProvider);
     if (store == null) {
-      _updateState(state.copyWith(
-        error: '매장 정보가 없습니다.',
-        isLoading: false,
-      ));
+      _updateState(state.copyWith(error: '매장 정보가 없습니다.', isLoading: false));
       return;
     }
 
@@ -48,22 +49,25 @@ class RegistrationNotifier extends ChangeNotifier {
       (result) {
         if (result.isSuccess) {
           final registrations = result.valueOrNull ?? [];
-          _updateState(state.copyWith(
-            registrations: registrations,
-            isLoading: false,
-          ));
+          _updateState(
+            state.copyWith(registrations: registrations, isLoading: false),
+          );
         } else {
-          _updateState(state.copyWith(
-            error: result.failureOrNull?.message ?? '등록 목록을 불러오는데 실패했습니다.',
-            isLoading: false,
-          ));
+          _updateState(
+            state.copyWith(
+              error: result.failureOrNull?.message ?? '등록 목록을 불러오는데 실패했습니다.',
+              isLoading: false,
+            ),
+          );
         }
       },
       onError: (error) {
-        _updateState(state.copyWith(
-          error: '등록 목록을 불러오는데 실패했습니다: $error',
-          isLoading: false,
-        ));
+        _updateState(
+          state.copyWith(
+            error: '등록 목록을 불러오는데 실패했습니다: $error',
+            isLoading: false,
+          ),
+        );
       },
     );
   }
@@ -86,10 +90,12 @@ class RegistrationNotifier extends ChangeNotifier {
       nextStep = state.currentStep;
     }
 
-    _updateState(state.copyWith(
-      currentRegistration: updatedRegistration,
-      currentStep: nextStep,
-    ));
+    _updateState(
+      state.copyWith(
+        currentRegistration: updatedRegistration,
+        currentStep: nextStep,
+      ),
+    );
   }
 
   /// 이전 단계로 이동합니다.
@@ -110,10 +116,7 @@ class RegistrationNotifier extends ChangeNotifier {
   Future<void> submitRegistration() async {
     final store = _ref.read(selectedStoreProvider);
     if (store == null) {
-      _updateState(state.copyWith(
-        error: '매장 정보가 없습니다.',
-        isLoading: false,
-      ));
+      _updateState(state.copyWith(error: '매장 정보가 없습니다.', isLoading: false));
       return;
     }
 
@@ -128,30 +131,33 @@ class RegistrationNotifier extends ChangeNotifier {
 
       if (result.isSuccess) {
         // 상태를 초기화하고 첫 단계로 돌아감
-        _updateState(state.copyWith(
-          currentRegistration: const Registration(),
-          currentStep: RegistrationStep.phone,
-          isLoading: false,
-        ));
+        _updateState(
+          state.copyWith(
+            currentRegistration: const Registration(),
+            currentStep: RegistrationStep.phone,
+            isLoading: false,
+          ),
+        );
       } else {
-        _updateState(state.copyWith(
-          error: result.failureOrNull?.message ?? '등록에 실패했습니다.',
-          isLoading: false,
-        ));
+        _updateState(
+          state.copyWith(
+            error: result.failureOrNull?.message ?? '등록에 실패했습니다.',
+            isLoading: false,
+          ),
+        );
       }
     } catch (e) {
-      _updateState(state.copyWith(
-        error: '등록에 실패했습니다: $e',
-        isLoading: false,
-      ));
+      _updateState(state.copyWith(error: '등록에 실패했습니다: $e', isLoading: false));
     }
   }
 
   /// 현재 작성 중인 등록 정보를 초기화합니다.
   void resetCurrentRegistration() {
-    _updateState(state.copyWith(
-      currentRegistration: const Registration(),
-      currentStep: RegistrationStep.phone,
-    ));
+    _updateState(
+      state.copyWith(
+        currentRegistration: const Registration(),
+        currentStep: RegistrationStep.phone,
+      ),
+    );
   }
 }

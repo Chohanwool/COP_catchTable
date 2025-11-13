@@ -1,4 +1,5 @@
 import 'package:catch_table/core/utils/result.dart';
+
 import 'package:catch_table/features/store/domain/entities/store.dart';
 
 /// Store Repository 인터페이스

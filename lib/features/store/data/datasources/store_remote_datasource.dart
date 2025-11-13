@@ -1,6 +1,8 @@
-import 'package:catch_table/core/constants/firebase_constants.dart';
-import 'package:catch_table/features/store/data/models/store_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:catch_table/core/constants/firebase_constants.dart';
+
+import 'package:catch_table/features/store/data/models/store_model.dart';
 
 /// Store Remote DataSource 인터페이스
 abstract class StoreRemoteDataSource {
@@ -12,7 +14,7 @@ abstract class StoreRemoteDataSource {
 /// Store Remote DataSource 구현체 (Firestore)
 class StoreRemoteDataSourceImpl implements StoreRemoteDataSource {
   StoreRemoteDataSourceImpl({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _firestore;
 

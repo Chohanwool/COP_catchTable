@@ -1,6 +1,8 @@
-import 'package:catch_table/core/constants/firebase_constants.dart';
-import 'package:catch_table/features/registration/domain/entities/registration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:catch_table/core/constants/firebase_constants.dart';
+
+import 'package:catch_table/features/registration/domain/entities/registration.dart';
 
 /// Registration Data Model
 ///
@@ -36,7 +38,8 @@ class RegistrationModel {
       groupSize: data[FirebaseFields.groupSize] as int? ?? 0,
       registeredAt: (data[FirebaseFields.registeredAt] as Timestamp).toDate(),
       date: data[FirebaseFields.date] as String? ?? '',
-      status: data[FirebaseFields.status] as String? ?? RegistrationStatus.waiting,
+      status:
+          data[FirebaseFields.status] as String? ?? RegistrationStatus.waiting,
     );
   }
 
@@ -54,10 +57,7 @@ class RegistrationModel {
 
   /// Model을 Domain Entity로 변환
   Registration toEntity() {
-    return Registration(
-      phoneNumber: phoneNumber,
-      groupSize: groupSize,
-    );
+    return Registration(phoneNumber: phoneNumber, groupSize: groupSize);
   }
 
   /// Domain Entity에서 Model로 변환

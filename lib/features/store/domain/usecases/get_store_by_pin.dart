@@ -1,5 +1,6 @@
 import 'package:catch_table/core/errors/failures.dart';
 import 'package:catch_table/core/utils/result.dart';
+
 import 'package:catch_table/features/store/domain/entities/store.dart';
 import 'package:catch_table/features/store/domain/repositories/store_repository.dart';
 
@@ -18,9 +19,7 @@ class GetStoreByPin {
   Future<Result<Store>> call(String pin) async {
     // PIN 포맷 검증
     if (pin.isEmpty || !RegExp(r'^\d{4,6}$').hasMatch(pin)) {
-      return const Error(
-        ValidationFailure('PIN 번호는 4~6자리 숫자여야 합니다.'),
-      );
+      return const Error(ValidationFailure('PIN 번호는 4~6자리 숫자여야 합니다.'));
     }
 
     return await repository.getStoreByPin(pin);
