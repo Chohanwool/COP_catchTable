@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "797153015506",
+    "project_id": "on-queue-dadbe",
+    "storage_bucket": "on-queue-dadbe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797153015506:android:a484fcd857c6c482f89f0b",
+        "android_client_info": {
+          "package_name": "com.example.catch_table"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbGe0Gbt4SAMEu95NXLKasJub2RScI0eU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797153015506:android:36548e7fd3d68c71f89f0b",
+        "android_client_info": {
+          "package_name": "com.example.on_queue"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbGe0Gbt4SAMEu95NXLKasJub2RScI0eU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
