@@ -37,7 +37,7 @@ class _PinLoginScreenState extends ConsumerState<PinLoginScreen> {
 
     if (pin.length != 4) {
       setState(() {
-        _errorMessage = 'PIN 번호는 4자리여야 합니다.';
+        _errorMessage = 'The PIN number must be 4 digits.';
       });
       return;
     }
@@ -73,7 +73,7 @@ class _PinLoginScreenState extends ConsumerState<PinLoginScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = '오류가 발생했습니다: $e';
+          _errorMessage = 'error: $e';
           _isLoading = false;
         });
         _pinController.clear(); // 입력 필드 초기화
@@ -122,7 +122,7 @@ class _PinLoginScreenState extends ConsumerState<PinLoginScreen> {
         ),
         SizedBox(height: context.hsp(16)),
         Text(
-          '매장 PIN 번호를 입력하세요',
+          'Please Enter store PIN nunber',
           style: TextStyle(fontSize: context.fsp(24), color: AppColors.grey),
         ),
       ],
@@ -235,7 +235,7 @@ class _PinLoginScreenState extends ConsumerState<PinLoginScreen> {
                 ),
               )
             : Text(
-                '로그인',
+                'Login',
                 style: TextStyle(
                   fontSize: context.fsp(20),
                   fontWeight: FontWeight.bold,
