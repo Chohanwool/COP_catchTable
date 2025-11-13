@@ -1,5 +1,5 @@
 import 'package:catch_table/features/registration/domain/entities/registration.dart';
-import 'package:catch_table/features/registration/presentation/providers/registration_notifier.dart';
+import 'package:catch_table/features/registration/presentation/providers/registration_providers.dart';
 import 'package:catch_table/features/registration/presentation/providers/registration_state.dart';
 import 'package:catch_table/features/registration/presentation/screens/waiting_list.dart';
 import 'package:catch_table/features/registration/presentation/widgets/registration_step_confirm.dart';
@@ -28,9 +28,9 @@ class _QueueRegistrationScreenState
   @override
   void initState() {
     super.initState();
-    // 첫 프레임 이후에 데이터 로드
+    // 첫 프레임 이후에 실시간 구독 시작
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(registrationProvider.notifier).loadRegistrations();
+      ref.read(registrationNotifierProvider).watchRegistrations();
     });
   }
 
@@ -48,7 +48,8 @@ class _QueueRegistrationScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(registrationProvider);
+    final notifier = ref.watch(registrationNotifierProvider);
+    final state = notifier.state;
 
     return SafeArea(
       child: Scaffold(
@@ -68,7 +69,7 @@ class _QueueRegistrationScreenState
     BuildContext context,
     RegistrationState state,
   ) {
-    final notifier = ref.read(registrationProvider.notifier);
+    final notifier = ref.read(registrationNotifierProvider);
 
     switch (state.currentStep) {
       case RegistrationStep.phone:

@@ -1,28 +1,29 @@
-import 'package:catch_table/features/registration/data/repositories/registration_repository_impl.dart';
+import 'package:catch_table/features/registration/data/datasources/registration_remote_datasource.dart';
+import 'package:catch_table/features/registration/data/repositories/registration_repository_firestore_impl.dart';
 import 'package:catch_table/features/registration/domain/repositories/registration_repository.dart';
-import 'package:catch_table/features/registration/domain/usecases/add_registration.dart';
-import 'package:catch_table/features/registration/domain/usecases/get_registrations.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:catch_table/features/registration/presentation/providers/registration_notifier.dart';
+import 'package:catch_table/features/registration/presentation/providers/registration_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-part 'registration_providers.g.dart';
+/// Registration Remote DataSource Provider
+final registrationRemoteDataSourceProvider =
+    Provider<RegistrationRemoteDataSource>((ref) {
+  return RegistrationRemoteDataSourceImpl();
+});
 
-/// Repository Provider
+/// Repository Provider (Firestore 버전)
 ///
-/// RegistrationRepository의 구현체를 제공합니다.
-/// 향후 Firebase 연결 시 구현체만 교체하면 됩니다.
-@riverpod
-RegistrationRepository registrationRepository(Ref ref) {
-  return RegistrationRepositoryImpl();
-}
+/// RegistrationRepository의 Firestore 구현체를 제공합니다.
+final registrationRepositoryProvider = Provider<RegistrationRepository>((ref) {
+  return RegistrationRepositoryFirestoreImpl(
+    ref.read(registrationRemoteDataSourceProvider),
+  );
+});
 
-/// GetRegistrations UseCase Provider
-@riverpod
-GetRegistrations getRegistrations(Ref ref) {
-  return GetRegistrations(ref.read(registrationRepositoryProvider));
-}
-
-/// AddRegistration UseCase Provider
-@riverpod
-AddRegistration addRegistration(Ref ref) {
-  return AddRegistration(ref.read(registrationRepositoryProvider));
-}
+/// Registration Notifier Provider
+///
+/// 등록 화면의 상태와 비즈니스 로직을 관리하는 Provider
+final registrationNotifierProvider =
+    ChangeNotifierProvider<RegistrationNotifier>((ref) {
+  return RegistrationNotifier(ref);
+});
