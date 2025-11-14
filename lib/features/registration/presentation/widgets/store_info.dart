@@ -61,51 +61,53 @@ class _StoreInfoState extends ConsumerState<StoreInfo> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Enter PIN to logout',
-              style: TextStyle(color: Colors.white70, fontSize: 16),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: pinController,
-              autofocus: true,
-              obscureText: true,
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                letterSpacing: 8,
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Enter PIN to logout',
+                style: TextStyle(color: Colors.white70, fontSize: 16),
               ),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                counterText: '',
-                filled: true,
-                fillColor: Colors.black.withValues(alpha: 0.3),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: const BorderSide(color: Colors.orange),
+              const SizedBox(height: 20),
+              TextField(
+                controller: pinController,
+                autofocus: true,
+                obscureText: true,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  letterSpacing: 8,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: const BorderSide(color: Colors.orange, width: 2),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide(
-                    color: Colors.grey.withValues(alpha: 0.5),
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  counterText: '',
+                  filled: true,
+                  fillColor: Colors.black.withValues(alpha: 0.3),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(color: Colors.orange),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: const BorderSide(color: Colors.orange, width: 2),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.grey.withValues(alpha: 0.5),
+                    ),
                   ),
                 ),
+                onSubmitted: (value) {
+                  _verifyPinAndLogout(value, store.pin);
+                  Navigator.of(context).pop();
+                },
               ),
-              onSubmitted: (value) {
-                _verifyPinAndLogout(value, store.pin);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           TextButton(

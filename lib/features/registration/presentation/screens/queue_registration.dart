@@ -56,6 +56,7 @@ class _QueueRegistrationScreenState
 
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false, // 키보드가 나타나도 화면 리사이즈 방지
         body: Row(
           children: [
             StoreInfo(waitingNum: state.registrations.length.toString()),
