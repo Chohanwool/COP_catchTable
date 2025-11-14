@@ -6,7 +6,8 @@ import 'package:catch_table/firebase_options.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:catch_table/features/auth/presentation/screens/pin_login_screen.dart';
+// import 'package:catch_table/features/auth/presentation/screens/pin_login_screen.dart';
+import 'package:catch_table/features/auth/presentation/screens/login_screen.dart';
 import 'package:catch_table/features/registration/presentation/screens/queue_registration.dart';
 
 void main() async {
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
       // 라우팅 설정
       initialRoute: '/',
       routes: {
-        '/': (context) => const PinLoginScreen(),
+        // '/': (context) => const PinLoginScreen(),
+        '/': (context) => const LoginScreen(),
         '/main': (context) => const QueueRegistrationScreen(),
       },
     );
