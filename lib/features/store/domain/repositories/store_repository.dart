@@ -19,6 +19,12 @@ abstract class StoreRepository {
   /// Returns: Success<Store> 또는 Error<Failure>
   Future<Result<Store>> getStoreById(String storeId);
 
+  /// Firebase Auth UID로 매장 정보 조회
+  ///
+  /// [uid] - Firebase Auth 사용자 UID
+  /// Returns: Success<Store> 또는 Error<Failure>
+  Future<Result<Store>> getStoreByUid(String uid);
+
   /// 매장 정보 업데이트
   ///
   /// [store] - 업데이트할 매장 정보

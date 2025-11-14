@@ -8,6 +8,7 @@ import 'package:catch_table/features/store/data/models/store_model.dart';
 abstract class StoreRemoteDataSource {
   Future<StoreModel> getStoreByPin(String pin);
   Future<StoreModel> getStoreById(String storeId);
+  Future<StoreModel> getStoreByUid(String uid);
   Future<void> updateStore(StoreModel store);
 }
 
@@ -64,6 +65,34 @@ class StoreRemoteDataSourceImpl implements StoreRemoteDataSource {
       return StoreModel.fromFirestore(
         docSnapshot.data() as Map<String, dynamic>,
         docSnapshot.id,
+      );
+    } on FirebaseException catch (e) {
+      throw FirebaseException(
+        plugin: e.plugin,
+        message: e.message ?? 'Firestore 오류가 발생했습니다.',
+      );
+    }
+  }
+
+  @override
+  Future<StoreModel> getStoreByUid(String uid) async {
+    try {
+      final querySnapshot = await _storesCollection
+          .where(FirebaseFields.storeUid, isEqualTo: uid)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        throw FirebaseException(
+          plugin: 'cloud_firestore',
+          message: '해당 사용자 계정에 연결된 매장을 찾을 수 없습니다.',
+        );
+      }
+
+      final doc = querySnapshot.docs.first;
+      return StoreModel.fromFirestore(
+        doc.data() as Map<String, dynamic>,
+        doc.id,
       );
     } on FirebaseException catch (e) {
       throw FirebaseException(

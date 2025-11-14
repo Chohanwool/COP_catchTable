@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:catch_table/core/consts/constants.dart';
 import 'package:catch_table/core/utils/responsive_helper.dart';
+import 'package:catch_table/core/utils/result.dart';
 
-class LoginScreen extends StatefulWidget {
+import 'package:catch_table/features/auth/presentation/providers/auth_providers.dart';
+
+import 'package:catch_table/features/store/presentation/providers/store_providers.dart';
+
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -25,6 +34,104 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  /// 로그인 처리
+  Future<void> _handleLogin() async {
+    // 키보드 숨기기
+    FocusScope.of(context).unfocus();
+
+    // 폼 유효성 검증
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // 1. Firebase Auth 로그인
+      final authRepository = ref.read(authRepositoryProvider);
+      final authResult = await authRepository.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      if (!authResult.isSuccess) {
+        if (mounted) {
+          _showErrorDialog(
+            authResult.failureOrNull?.message ?? '로그인에 실패했습니다.',
+          );
+        }
+        return;
+      }
+
+      final user = authResult.valueOrNull!;
+
+      // 2. Firestore에서 매장 정보 조회
+      final storeRepository = ref.read(storeRepositoryProvider);
+      final storeResult = await storeRepository.getStoreByUid(user.uid);
+
+      if (!storeResult.isSuccess) {
+        if (mounted) {
+          _showErrorDialog(
+            storeResult.failureOrNull?.message ??
+                '매장 정보를 불러오는데 실패했습니다.',
+          );
+        }
+        // 로그인은 성공했지만 매장 정보가 없으면 로그아웃
+        await authRepository.signOut();
+        return;
+      }
+
+      final store = storeResult.valueOrNull!;
+
+      // 3. 매장 정보를 상태에 저장
+      ref.read(selectedStoreProvider.notifier).state = store;
+
+      // 4. QueueRegistrationScreen으로 이동
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/main');
+      }
+    } catch (e) {
+      if (mounted) {
+        _showErrorDialog('로그인 중 오류가 발생했습니다: $e');
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  /// 에러 다이얼로그 표시
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkGrey,
+        title: const Text(
+          'Login Failed',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: Text(
+          message,
+          style: const TextStyle(color: AppColors.lightGrey),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'OK',
+              style: TextStyle(color: AppColors.primary),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -54,9 +161,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     vertical: context.hsp(40),
                     horizontal: context.sp(32),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                       // Logo/Title
                       Text(
                         'Catch Table',
@@ -75,12 +184,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
-                      SizedBox(height: context.hsp(40)),
+                        SizedBox(height: context.hsp(40)),
 
-                      // Email TextField
-                      TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
+                        // Email TextField
+                        TextFormField(
+                          controller: _emailController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            if (!value.contains('@')) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
                           labelText: 'Email',
                           labelStyle: const TextStyle(color: AppColors.grey),
                           prefixIcon: const Icon(
@@ -111,18 +229,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        style: const TextStyle(color: Colors.white),
-                        autocorrect: false,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
+                          style: const TextStyle(color: Colors.white),
+                          autocorrect: false,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
 
-                      SizedBox(height: context.hsp(20)),
+                        SizedBox(height: context.hsp(20)),
 
-                      // Password TextField
-                      TextField(
-                        controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        decoration: InputDecoration(
+                        // Password TextField
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: _obscurePassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
                           labelText: 'Password',
                           labelStyle: const TextStyle(color: AppColors.grey),
                           prefixIcon: const Icon(
@@ -166,54 +293,63 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        style: const TextStyle(color: Colors.white),
-                        autocorrect: false,
-                      ),
+                          style: const TextStyle(color: Colors.white),
+                          autocorrect: false,
+                        ),
 
-                      SizedBox(height: context.hsp(32)),
+                        SizedBox(height: context.hsp(32)),
 
-                      // Login Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: context.hsp(56),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // TODO: Implement login logic
+                        // Login Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: context.hsp(56),
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _handleLogin,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              disabledBackgroundColor: AppColors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              elevation: 2.0,
+                            ),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                      fontSize: context.fsp(18),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        ),
+
+                        SizedBox(height: context.hsp(16)),
+
+                        // Forgot Password Link
+                        TextButton(
+                          onPressed: _isLoading ? null : () {
+                            // TODO: Implement forgot password
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 2.0,
-                          ),
                           child: Text(
-                            'Sign In',
+                            'Forgot Password?',
                             style: TextStyle(
-                              fontSize: context.fsp(18),
-                              fontWeight: FontWeight.w600,
+                              fontSize: context.fsp(14),
+                              color: AppColors.grey,
                             ),
                           ),
                         ),
-                      ),
-
-                      SizedBox(height: context.hsp(16)),
-
-                      // Forgot Password Link
-                      TextButton(
-                        onPressed: () {
-                          // TODO: Implement forgot password
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            fontSize: context.fsp(14),
-                            color: AppColors.grey,
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

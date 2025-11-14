@@ -10,6 +10,7 @@ class FirebaseFields {
   static const String storeId = 'storeId';
   static const String storeName = 'name';
   static const String storePin = 'pin';
+  static const String storeUid = 'storeUid'; // Firebase Auth User ID
   static const String storeLogoUrl = 'logoUrl';
   static const String storeContact = 'contact';
   static const String storeAddress = 'address';

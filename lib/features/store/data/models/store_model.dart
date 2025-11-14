@@ -9,6 +9,7 @@ class StoreModel {
     required this.id,
     required this.name,
     required this.pin,
+    required this.uid,
     this.logoUrl,
     this.contact,
     this.address,
@@ -17,6 +18,7 @@ class StoreModel {
   final String id;
   final String name;
   final String pin;
+  final String uid; // Firebase Auth User ID
   final String? logoUrl;
   final String? contact;
   final String? address;
@@ -27,6 +29,7 @@ class StoreModel {
       id: json['id'] as String,
       name: json['name'] as String,
       pin: json['pin'] as String,
+      uid: json['uid'] as String,
       logoUrl: json['logoUrl'] as String?,
       contact: json['contact'] as String?,
       address: json['address'] as String?,
@@ -39,6 +42,7 @@ class StoreModel {
       'id': id,
       'name': name,
       'pin': pin,
+      'uid': uid,
       if (logoUrl != null) 'logoUrl': logoUrl,
       if (contact != null) 'contact': contact,
       if (address != null) 'address': address,
@@ -51,6 +55,7 @@ class StoreModel {
       id: id,
       name: data[FirebaseFields.storeName] as String? ?? '',
       pin: data[FirebaseFields.storePin] as String? ?? '',
+      uid: data[FirebaseFields.storeUid] as String? ?? '',
       logoUrl: data[FirebaseFields.storeLogoUrl] as String?,
       contact: data[FirebaseFields.storeContact] as String?,
       address: data[FirebaseFields.storeAddress] as String?,
@@ -62,6 +67,7 @@ class StoreModel {
     return {
       FirebaseFields.storeName: name,
       FirebaseFields.storePin: pin,
+      FirebaseFields.storeUid: uid,
       if (logoUrl != null) FirebaseFields.storeLogoUrl: logoUrl,
       if (contact != null) FirebaseFields.storeContact: contact,
       if (address != null) FirebaseFields.storeAddress: address,
@@ -74,6 +80,7 @@ class StoreModel {
       id: id,
       name: name,
       pin: pin,
+      uid: uid,
       logoUrl: logoUrl,
       contact: contact,
       address: address,
@@ -86,6 +93,7 @@ class StoreModel {
       id: store.id,
       name: store.name,
       pin: store.pin,
+      uid: store.uid,
       logoUrl: store.logoUrl,
       contact: store.contact,
       address: store.address,

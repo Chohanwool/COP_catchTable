@@ -40,6 +40,18 @@ class StoreRepositoryImpl implements StoreRepository {
   }
 
   @override
+  Future<Result<Store>> getStoreByUid(String uid) async {
+    try {
+      final storeModel = await remoteDataSource.getStoreByUid(uid);
+      return Success(storeModel.toEntity());
+    } on FirebaseException catch (e) {
+      return Error(FirestoreFailure(e.message ?? 'Firestore 오류가 발생했습니다.'));
+    } catch (e) {
+      return Error(ServerFailure('서버 오류가 발생했습니다: $e'));
+    }
+  }
+
+  @override
   Future<Result<void>> updateStore(Store store) async {
     try {
       final storeModel = StoreModel.fromEntity(store);

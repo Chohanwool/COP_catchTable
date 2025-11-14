@@ -6,6 +6,7 @@ class Store {
     required this.id,
     required this.name,
     required this.pin,
+    required this.uid,
     this.logoUrl,
     this.contact,
     this.address,
@@ -14,6 +15,7 @@ class Store {
   final String id;
   final String name;
   final String pin;
+  final String uid; // Firebase Auth User ID
   final String? logoUrl;
   final String? contact;
   final String? address;
@@ -34,6 +36,7 @@ class Store {
     String? id,
     String? name,
     String? pin,
+    String? uid,
     String? logoUrl,
     String? contact,
     String? address,
@@ -42,6 +45,7 @@ class Store {
       id: id ?? this.id,
       name: name ?? this.name,
       pin: pin ?? this.pin,
+      uid: uid ?? this.uid,
       logoUrl: logoUrl ?? this.logoUrl,
       contact: contact ?? this.contact,
       address: address ?? this.address,
@@ -56,6 +60,7 @@ class Store {
         other.id == id &&
         other.name == name &&
         other.pin == pin &&
+        other.uid == uid &&
         other.logoUrl == logoUrl &&
         other.contact == contact &&
         other.address == address;
@@ -66,6 +71,7 @@ class Store {
     return id.hashCode ^
         name.hashCode ^
         pin.hashCode ^
+        uid.hashCode ^
         logoUrl.hashCode ^
         contact.hashCode ^
         address.hashCode;
@@ -73,6 +79,6 @@ class Store {
 
   @override
   String toString() {
-    return 'Store(id: $id, name: $name, pin: $pin, logoUrl: $logoUrl, contact: $contact, address: $address)';
+    return 'Store(id: $id, name: $name, pin: $pin, uid: $uid, logoUrl: $logoUrl, contact: $contact, address: $address)';
   }
 }
